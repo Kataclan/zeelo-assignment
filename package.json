@@ -10,8 +10,10 @@
     "test": "jest --watchAll"
   },
   "dependencies": {
+    "formik": "^2.2.9",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
