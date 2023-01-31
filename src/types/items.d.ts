@@ -5,6 +5,13 @@ type ListItem = {
   details?: { name: string; value: string | number }[];
 };
 
+type ListItemDetails = {
+  title: string;
+  author: string;
+  image: string;
+  price: number;
+};
+
 type GetListItemsRequest = {
   offset: number;
   count: number;
@@ -23,3 +30,5 @@ type GetListItemDetailsResponse = {
   image: string;
   price: number;
 };
+
+type CreateListItemRequest = ListItemDetails;

@@ -1,24 +1,27 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { fetchListItemDetails, fetchListItems } from "../api";
+import { createListItem, fetchListItemDetails, fetchListItems } from "../api";
 import { DEFAULT_LIST_ITEMS_PER_PAGE } from "../constants";
 
+// TODO : Change state to useReducer
 export default (page = 0) => {
   const [requestState, setRequestState] = useState<{
     items: ListItem[];
     loading: boolean;
     loadingDetails: boolean;
+    creatingItem: boolean;
     error: { msg: string } | null;
   }>({
     items: [],
     loading: true,
     loadingDetails: false,
+    creatingItem: false,
     error: null,
   });
   const [fetchedPages, setFetchedPages] = useState<number[]>([]);
   const [selectedItem, setSelectedItem] = useState<ListItem | null>(null);
 
-  const { items, loading, error, loadingDetails } = requestState;
+  const { items, loading, error, loadingDetails, creatingItem } = requestState;
 
   const selectItem = useCallback((id: string) => {
     const item = items.find((item) => item.id === id);
@@ -90,6 +93,26 @@ export default (page = 0) => {
     }
   }, [selectedItem, items]);
 
+  const createItem = useCallback(async (details: ListItemDetails) => {
+    setRequestState({ ...requestState, creatingItem: true });
+    try {
+      const response = await createListItem(details);
+      // TODO: Here I would add the new item to the items array, but I hardcoded the TOTAL number of items to 20 for the pagination to work
+      setRequestState({
+        ...requestState,
+        creatingItem: false,
+      });
+    } catch (err: any) {
+      setRequestState({
+        ...requestState,
+        creatingItem: false,
+        error: { msg: err.msg },
+      });
+    }
+
+    setRequestState({ ...requestState, loading: true });
+  }, []);
+
   // Fetch items on page change
   useEffect(() => {
     if (!fetchedPages.includes(page)) {
@@ -102,5 +125,14 @@ export default (page = 0) => {
     fetchItemDetails();
   }, [selectedItem]);
 
-  return { items, loading, error, loadingDetails, selectItem, selectedItem };
+  return {
+    items,
+    loading,
+    error,
+    loadingDetails,
+    selectItem,
+    selectedItem,
+    createItem,
+    creatingItem,
+  };
 };

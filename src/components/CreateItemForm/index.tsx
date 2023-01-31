@@ -9,15 +9,8 @@ export const validationSchema = Yup.object({
   image: Yup.string().url("Image should be a valid URL"),
 });
 
-interface ItemDetails {
-  title: string;
-  author: string;
-  price: number;
-  image: string;
-}
-
 interface CreateBookFormProps {
-  onSubmit?: (values: ItemDetails) => void;
+  onSubmit?: (values: ListItemDetails) => void;
 }
 
 const CreateBookForm: React.FC<CreateBookFormProps> = ({
@@ -27,7 +20,7 @@ const CreateBookForm: React.FC<CreateBookFormProps> = ({
     <Formik
       initialValues={{ title: "", author: "", price: 0, image: "" }}
       validationSchema={validationSchema}
-      onSubmit={(values: ItemDetails) => {
+      onSubmit={(values: ListItemDetails) => {
         onSubmit(values);
       }}
     >
