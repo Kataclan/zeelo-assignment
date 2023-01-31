@@ -1,6 +1,7 @@
 import { useCallback } from "react";
+
 import { Heading, ItemsList } from "./components";
-import useListItems from "./hooks/useListItems";
+import { useListItems } from "./hooks";
 
 const App: React.FC = () => {
   const { items, loading, error, selectItem, selectedItem, loadingDetails } =
