@@ -2,6 +2,7 @@ type ListItem = {
   id: string;
   title: string;
   link: string;
+  details?: { name: string; value: string | number }[];
 };
 
 type GetListItemsRequest = {
@@ -9,6 +10,16 @@ type GetListItemsRequest = {
   count: number;
 };
 
-type GetListItemsResponse = {
-  items: ListItem[];
+type GetListItemsResponse = ListItem[];
+
+type GetListItemDetailsRequest = {
+  id: string;
+};
+
+type GetListItemDetailsResponse = {
+  id: string;
+  title: string;
+  author: string;
+  image: string;
+  price: number;
 };

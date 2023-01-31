@@ -17,7 +17,7 @@ const getListItemsHandler = rest.get(ITEMS_URL, async (req, res, ctx) => {
     title: item.title,
     link: `/api/v1/${item.id}`,
   }));
-  return res(ctx.status(200), ctx.delay(1000), ctx.json({ items }));
+  return res(ctx.status(200), ctx.delay(1000), ctx.json(items));
 });
 
 const itemsHandlers = [getListItemsHandler];

@@ -7,7 +7,6 @@ import App from "./App";
 
 // Await for mswWorker to start before rendering the app in DEV mode
 async function startApp() {
-  console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === "development") {
     await mswWorker.start();
   }
