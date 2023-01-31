@@ -34,4 +34,23 @@ describe("App", () => {
       expect(screen.getByText(item.title)).toBeInTheDocument();
     });
   });
+
+  it("shows second page items when clicking page 2 button", async () => {
+    act(() => {
+      render(<App />);
+    });
+    // We need to wait for MSW to respond with the mocked data (see /api-mocks/items/handlers.ts)
+    await sleep(1000);
+    const button = screen.getByRole("button", { name: "2" });
+    act(() => {
+      button.click();
+    });
+    // We need to wait for MSW to respond with the mocked data (see /api-mocks/items/handlers.ts)
+    await sleep(1000);
+    mockItems
+      .slice(DEFAULT_LIST_ITEMS_PER_PAGE, DEFAULT_LIST_ITEMS_PER_PAGE * 2)
+      .forEach((item) => {
+        expect(screen.getByText(item.title)).toBeInTheDocument();
+      });
+  });
 });

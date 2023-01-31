@@ -4,3 +4,4 @@ export const ITEMS_URL = `${API_URL}/items`;
 
 // ListItems
 export const DEFAULT_LIST_ITEMS_PER_PAGE = 5;
+export const DEFAULT_TOTAL_ITEMS = 20;
