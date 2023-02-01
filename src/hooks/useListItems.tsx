@@ -4,34 +4,38 @@ import { createListItem, fetchListItemDetails, fetchListItems } from "../api";
 import { DEFAULT_LIST_ITEMS_PER_PAGE } from "../constants";
 
 // TODO : Change state to useReducer
-export default (page = 0) => {
+export default (page = 0, itemId = "") => {
   const [requestState, setRequestState] = useState<{
     items: ListItem[];
     loading: boolean;
     loadingDetails: boolean;
-    creatingItem: boolean;
     error: { msg: string } | null;
+    fetchedPages: number[];
   }>({
     items: [],
     loading: true,
     loadingDetails: false,
-    creatingItem: false,
     error: null,
+    fetchedPages: [],
   });
-  const [fetchedPages, setFetchedPages] = useState<number[]>([]);
-  const [selectedItem, setSelectedItem] = useState<ListItem | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string>(itemId);
 
-  const { items, loading, error, loadingDetails, creatingItem } = requestState;
+  const { items, loading, error, loadingDetails, fetchedPages } = requestState;
+  const selectedItem = items.find((item) => item.id === selectedItemId);
 
-  const selectItem = useCallback(
-    (id: string) => {
-      const item = items.find((item) => item.id === id);
-      if (item) {
-        setSelectedItem(item);
-      }
-    },
-    [items]
-  );
+  const selectItem = (itemId: string) => {
+    console.log(
+      "selectItem",
+      itemId,
+      selectedItemId,
+      itemId === selectedItemId
+    );
+    if (selectedItemId === itemId) {
+      setSelectedItemId("");
+    } else {
+      setSelectedItemId(itemId);
+    }
+  };
 
   const fetchItems = useCallback(async () => {
     setRequestState({ ...requestState, loading: true });
@@ -49,9 +53,9 @@ export default (page = 0) => {
         ...requestState,
         items: tmpItems,
         loading: false,
+        fetchedPages: [...fetchedPages, page],
       });
       // Add page to fetchedPages to avoid fetching it again
-      setFetchedPages([...fetchedPages, page]);
     } catch (err: any) {
       setRequestState({
         ...requestState,
@@ -59,62 +63,49 @@ export default (page = 0) => {
         error: { msg: err.msg },
       });
     }
-  }, [items, fetchedPages, page]);
+  }, [items, page]);
 
-  const fetchItemDetails = useCallback(async () => {
-    // Fetch item details if not already fetched
-    if (selectedItem && !selectedItem.details) {
-      setRequestState({ ...requestState, loadingDetails: true });
-      try {
-        const response = await fetchListItemDetails({ id: selectedItem.id });
-        // Add details to selected item
-        const selectedItemWithDetails = {
-          ...selectedItem,
-          details: [
-            { name: "author", value: response.data.author },
-            { name: "price", value: response.data.price },
-            { name: "image", value: response.data.image },
-          ],
-        };
-        // Update items with new selected item
-        const tmpItems = items;
-        tmpItems[parseInt(selectedItem.id) - 1] = selectedItemWithDetails;
+  const fetchItemDetails = useCallback(
+    async (itemId: string) => {
+      // Fetch item details if not already fetched
+      const currentItem = items.find((item) => item.id === itemId);
+      if (currentItem && !currentItem.details) {
         setRequestState({
           ...requestState,
-          items: tmpItems,
-          loadingDetails: false,
+          loading: false,
+          loadingDetails: true,
         });
-        // Update selected item
-        setSelectedItem(selectedItemWithDetails);
-      } catch (err: any) {
-        setRequestState({
-          ...requestState,
-          error: { msg: err.msg },
-          loadingDetails: false,
-        });
+        try {
+          const response = await fetchListItemDetails({ id: currentItem.id });
+          // Add details to selected item
+          const itemWithDetails = {
+            ...currentItem,
+            details: [
+              { name: "author", value: response.data.author },
+              { name: "price", value: response.data.price },
+              { name: "image", value: response.data.image },
+            ],
+          };
+          // Update items with new selected item
+          const tmpItems = items;
+          tmpItems[parseInt(currentItem.id) - 1] = itemWithDetails;
+          setRequestState({
+            ...requestState,
+            items: tmpItems,
+            loading: false,
+            loadingDetails: false,
+          });
+        } catch (err: any) {
+          setRequestState({
+            ...requestState,
+            error: { msg: err.msg },
+            loadingDetails: false,
+          });
+        }
       }
-    }
-  }, [selectedItem, items]);
-
-  const createItem = useCallback(async (details: ListItemDetails) => {
-    setRequestState({ ...requestState, creatingItem: true });
-    try {
-      const response = await createListItem(details);
-      // TODO: Here I would add the new item to the items array, but I hardcoded the TOTAL number of items to 20 for the pagination to work
-      setRequestState({
-        ...requestState,
-        creatingItem: false,
-      });
-    } catch (err: any) {
-      setRequestState({
-        ...requestState,
-        creatingItem: false,
-        error: { msg: err.msg },
-      });
-    }
-
-    setRequestState({ ...requestState, loading: true });
-  }, []);
+    },
+    [items]
+  );
 
   // Fetch items on page change
   useEffect(() => {
@@ -123,19 +114,19 @@ export default (page = 0) => {
     }
   }, [page]);
 
-  // Fetch item details on item selection
+  // Fetch items on page change
   useEffect(() => {
-    fetchItemDetails();
-  }, [selectedItem]);
+    if (selectedItemId) {
+      fetchItemDetails(selectedItemId);
+    }
+  }, [selectedItemId]);
 
   return {
     items,
     loading,
     error,
     loadingDetails,
-    selectItem,
     selectedItem,
-    createItem,
-    creatingItem,
+    selectItem,
   };
 };

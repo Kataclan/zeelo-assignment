@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 
-import ItemsList from ".";
+import { ItemsListPresentational as ItemsList } from ".";
 
 const ITEMS = [
   {
@@ -37,9 +37,13 @@ describe("ItemsList", () => {
 
   it("should render error message if error and not loading", () => {
     const { getByText } = render(
-      <ItemsList items={ITEMS} loading={false} error={true} />
+      <ItemsList
+        items={ITEMS}
+        loading={false}
+        error={"An error has occurred"}
+      />
     );
-    expect(getByText("An error has ocurred")).toBeInTheDocument();
+    expect(getByText("An error has occurred")).toBeInTheDocument();
   });
 
   it("should render skeletonCount items if loading and error", () => {
@@ -47,7 +51,7 @@ describe("ItemsList", () => {
       <ItemsList
         items={[]}
         loading={true}
-        error={true}
+        error={"An error has occurred"}
         skeletonCount={ITEMS.length}
       />
     );

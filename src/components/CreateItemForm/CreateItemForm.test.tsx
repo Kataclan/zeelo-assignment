@@ -1,18 +1,18 @@
 import { render, fireEvent } from "@testing-library/react";
 
-import CreateBookForm from "./";
+import { CreateItemFormPresentational as CreateItemForm } from "./";
 import { act } from "react-dom/test-utils";
 
 const onSubmit = jest.fn();
 
-describe("CreateBookForm", () => {
+describe("CreateItemForm", () => {
   beforeAll(() => {
     jest.resetAllMocks();
   });
 
   it("submits form correctly", async () => {
     const { getByLabelText, getByText } = render(
-      <CreateBookForm onSubmit={onSubmit} />
+      <CreateItemForm onSubmit={onSubmit} />
     );
 
     const titleInput = getByLabelText("Title");
