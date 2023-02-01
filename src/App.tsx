@@ -1,7 +1,7 @@
 import { Heading, ItemsList, CreateItemForm } from "./components";
 
 const App: React.FC = () => (
-  <div>
+  <div className="container h-full flex flex-col items-center">
     <Heading>Zeelo Assignment</Heading>
     <ItemsList />
     <CreateItemForm />

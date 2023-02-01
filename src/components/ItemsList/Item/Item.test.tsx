@@ -26,7 +26,7 @@ describe("ListItem", () => {
   it("should call onClick prop method when click on details button", () => {
     const onClick = jest.fn();
     const { getByRole } = render(<ListItem item={item} onClick={onClick} />);
-    const detailsButton = getByRole("button", { name: "Details" });
+    const detailsButton = getByRole("button");
     act(() => {
       detailsButton.click();
     });
@@ -42,7 +42,7 @@ describe("ListItem", () => {
 
   it("should hide details when clicking Details button twice", () => {
     const { getByRole, queryByText } = render(<ListItem item={item} />);
-    const detailsButton = getByRole("button", { name: "Details" });
+    const detailsButton = getByRole("button");
     act(() => {
       detailsButton.click();
     });

@@ -1,6 +1,6 @@
-import { memo, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 const Heading: React.FC<PropsWithChildren> = ({ children }) => {
   return <h1>{children}</h1>;
 };
-export default memo(Heading);
+export default Heading;

@@ -6,10 +6,9 @@ import {
 } from "../../constants";
 import { useListItems, usePagination } from "../../hooks";
 import Paginator from "../Paginator";
-import Heading from "../Heading";
 
 const ListItemSkeleton: React.FC = () => {
-  return <div>Loading...</div>;
+  return <div className="w-full h-12">Loading...</div>;
 };
 
 interface PresentationalProps {
@@ -51,22 +50,22 @@ export const ItemsListPresentational: React.FC<PresentationalProps> = ({
         />
       ));
   return (
-    <div>
-      <Heading>Items List</Heading>
-      <div>
-        {error !== "" && !loading ? (
-          <span>{error}</span>
-        ) : (
-          <div>
-            <div>{itemsToRender}</div>
-            <Paginator
-              totalPages={DEFAULT_TOTAL_ITEMS / DEFAULT_LIST_ITEMS_PER_PAGE}
-              currentPage={currentPage}
-              onClickPage={onClickPageButton}
-            />
+    <div className="w-full flex flex-col items-center">
+      <h2 className="text-2xl">Items List</h2>
+      {error !== "" && !loading ? (
+        <span>{error}</span>
+      ) : (
+        <div className="w-full flex flex-col items-center space-y-6">
+          <div className="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200">
+            {itemsToRender}
           </div>
-        )}
-      </div>
+          <Paginator
+            totalPages={DEFAULT_TOTAL_ITEMS / DEFAULT_LIST_ITEMS_PER_PAGE}
+            currentPage={currentPage}
+            onClickPage={onClickPageButton}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -90,7 +89,7 @@ const ItemsListContainer: React.FC = () => {
   );
 
   return (
-    <div>
+    <div className="w-full max-w-lg">
       <ItemsListPresentational
         items={itemsToRender}
         loading={loading}

@@ -18,15 +18,17 @@ const ListItem: React.FC<ListItemProps> = ({
   }, []);
 
   return (
-    <div>
-      <div>
-        <span>{item.title}</span>{" "}
-        <button onClick={handleClickDetails}>Details</button>
+    <button
+      className="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer focus:outline-none"
+      onClick={handleClickDetails}
+    >
+      <div className="w-full flex justify-between items-center">
+        <span>{item.title}</span> <span>+</span>
       </div>
       {selected && (
-        <div>
+        <div className="flex py-4 px-2">
           {loadingDetails ? (
-            <div>Loading details...</div>
+            <div className="flex w-full justify-center">Loading details...</div>
           ) : (
             <ul>
               {item.details?.map((detail) => (
@@ -38,7 +40,7 @@ const ListItem: React.FC<ListItemProps> = ({
           )}
         </div>
       )}
-    </div>
+    </button>
   );
 };
 
