@@ -28,49 +28,92 @@ export const CreateItemFormPresentational: React.FC<CreateItemFormProps> = ({
       }}
     >
       {({ isSubmitting }) => (
-        <Form>
-          <div>
-            <label htmlFor="title">Title</label>
+        <Form className="w-full flex flex-col items-center">
+          <div className="w-full">
+            <label
+              htmlFor="title"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Title
+            </label>
             <Field
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               id="title"
               name="title"
               type="text"
               disabled={isSubmitting}
             />
-            <ErrorMessage name="title" component="div" />
+            <ErrorMessage
+              className="mt-2 text-sm text-red-600"
+              name="title"
+              component="div"
+            />
           </div>
-          <div>
-            <label htmlFor="author">Author</label>
+          <div className="w-full">
+            <label
+              htmlFor="author"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Author
+            </label>
             <Field
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               id="author"
               name="author"
               type="text"
               disabled={isSubmitting}
             />
-            <ErrorMessage name="author" component="div" />
+            <ErrorMessage
+              className="mt-2 text-sm text-red-600"
+              name="author"
+              component="div"
+            />
           </div>
-          <div>
-            <label htmlFor="price">Price</label>
+          <div className="w-full">
+            <label
+              htmlFor="price"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Price
+            </label>
             <Field
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               id="price"
               name="price"
               type="number"
               disabled={isSubmitting}
             />
-            <ErrorMessage name="price" component="div" />
+            <ErrorMessage
+              className="mt-2 text-sm text-red-600"
+              name="price"
+              component="div"
+            />
           </div>
-          <div>
-            <label htmlFor="image">Image</label>
+          <div className="w-full">
+            <label
+              htmlFor="image"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Image
+            </label>
             <Field
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               id="image"
               name="image"
               type="text"
               disabled={isSubmitting}
             />
-            <ErrorMessage name="image" component="div" />
+            <ErrorMessage
+              className="mt-2 text-sm text-red-600"
+              name="image"
+              component="div"
+            />
           </div>
-
-          <button type="submit" disabled={isSubmitting}>
+          <button
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2  focus:outline-none mt-6 "
+            type="submit"
+            disabled={isSubmitting}
+          >
             Create
           </button>
         </Form>
@@ -91,10 +134,13 @@ const CreateItemFormContainer = () => {
   };
 
   return (
-    <div>
+    <div className="w-full max-w-lg flex flex-col items-center ">
+      <h2 className="text-xl text-center mb-0">Create Item Form</h2>
       <CreateItemFormPresentational onSubmit={createItem} />
-      {status === "loading" && <p>Loading</p>}
-      {status === "success" && <p>Item created successfuly</p>}
+      {status === "loading" && <p className="text-sm">Creating item</p>}
+      {status === "success" && (
+        <p className="text-sm text-green-400">Item created successfuly</p>
+      )}
     </div>
   );
 };

@@ -29,7 +29,7 @@ describe("App", () => {
       render(<App />);
     });
     // We need to wait for MSW to respond with the mocked data (see /api-mocks/items/handlers.ts)
-    await sleep(1000);
+    await sleep(1200);
     mockItems.slice(0, DEFAULT_LIST_ITEMS_PER_PAGE).forEach((item) => {
       expect(screen.getByText(item.title)).toBeInTheDocument();
     });
