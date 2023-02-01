@@ -20,6 +20,24 @@ const getListItemsHandler = rest.get(ITEMS_URL, async (req, res, ctx) => {
   return res(ctx.status(200), ctx.delay(1000), ctx.json(items));
 });
 
-const itemsHandlers = [getListItemsHandler];
+const getItemDetails = rest.get(`${ITEMS_URL}/:id`, async (req, res, ctx) => {
+  const itemId = req.params.id as string;
+  const item = ITEMS[parseInt(itemId) - 1];
+  const response = {
+    id: item.id,
+    image: item.image,
+    title: item.title,
+    author: item.author,
+    price: item.price,
+  };
+  return res(ctx.status(200), ctx.delay(1000), ctx.json(response));
+});
+
+const createItem = rest.post(`${ITEMS_URL}/create`, async (req, res, ctx) => {
+  const item = (await req.json()) as ListItemDetails;
+  return res(ctx.status(200), ctx.delay(1000), ctx.json(item));
+});
+
+const itemsHandlers = [getListItemsHandler, getItemDetails, createItem];
 
 export default itemsHandlers;

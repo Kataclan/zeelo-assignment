@@ -40,13 +40,16 @@ describe("App", () => {
       render(<App />);
     });
     // We need to wait for MSW to respond with the mocked data (see /api-mocks/items/handlers.ts)
-    await sleep(1000);
+    await sleep(1200);
     const button = screen.getByRole("button", { name: "2" });
     act(() => {
       button.click();
     });
-    // We need to wait for MSW to respond with the mocked data (see /api-mocks/items/handlers.ts)
-    await sleep(1000);
+    expect(screen.getAllByText("Loading...").length).toBe(
+      DEFAULT_LIST_ITEMS_PER_PAGE
+    );
+    await sleep(1200);
+    // We need to wait for MSW to respond with the mocked data (see /api-mocks/items/handlers.ts)w
     mockItems
       .slice(DEFAULT_LIST_ITEMS_PER_PAGE, DEFAULT_LIST_ITEMS_PER_PAGE * 2)
       .forEach((item) => {

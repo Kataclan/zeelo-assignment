@@ -14,21 +14,20 @@ const App: React.FC = () => {
     selectItem,
     selectedItem,
     loadingDetails,
-    creatingItem,
     createItem,
   } = useListItems(currentPage);
 
-  const handleClickItem = useCallback((item: ListItem) => {
+  const handleClickItem = (item: ListItem) => {
     selectItem(item.id);
-  }, []);
+  };
 
-  const handleClickPageButton = useCallback((page: number) => {
+  const handleClickPageButton = (page: number) => {
     setCurrentPage(page);
-  }, []);
+  };
 
-  const handleCreateItemFormSubmit = useCallback((details: ListItemDetails) => {
+  const handleCreateItemFormSubmit = (details: ListItemDetails) => {
     createItem(details);
-  }, []);
+  };
 
   const itemsToRender = items.slice(
     currentPage * DEFAULT_LIST_ITEMS_PER_PAGE,

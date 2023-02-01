@@ -23,12 +23,15 @@ export default (page = 0) => {
 
   const { items, loading, error, loadingDetails, creatingItem } = requestState;
 
-  const selectItem = useCallback((id: string) => {
-    const item = items.find((item) => item.id === id);
-    if (item) {
-      setSelectedItem(item);
-    }
-  }, []);
+  const selectItem = useCallback(
+    (id: string) => {
+      const item = items.find((item) => item.id === id);
+      if (item) {
+        setSelectedItem(item);
+      }
+    },
+    [items]
+  );
 
   const fetchItems = useCallback(async () => {
     setRequestState({ ...requestState, loading: true });
@@ -39,7 +42,7 @@ export default (page = 0) => {
       });
       // Merge new items with existing items
       const tmpItems = items;
-      response.data.forEach((item: ListItem, i: number) => {
+      response?.data.forEach((item: ListItem, i: number) => {
         tmpItems[page * DEFAULT_LIST_ITEMS_PER_PAGE + i] = item;
       });
       setRequestState({
